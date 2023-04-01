@@ -1,7 +1,6 @@
 from rest_framework import serializers
 from .models import Project, Image, Language, Contact, Service, Skill
 
-
 # image serializer...
 class ImageSerializer(serializers.ModelSerializer):
     class Meta:

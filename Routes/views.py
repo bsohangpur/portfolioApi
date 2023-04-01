@@ -4,8 +4,6 @@ from .serializers import ProjectSerializer, ImageSerializer, LanguageSerializer,
 from .serializers import ServiceSerializer, SkillSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, AllowAny
 
-# Create your views here.
-
 # language view sets...
 class LanguageViewSet(generics.ListCreateAPIView):
     queryset = Language.objects.all()
