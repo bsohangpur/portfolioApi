@@ -11,7 +11,7 @@ class Language(models.Model):
 class Image(models.Model):
     name = models.CharField(max_length=50)
     url = models.ImageField(upload_to='projects/',
-                           max_length=100, default="")
+                           default="")
 
     def __str__(self):
         return str(self.name)
