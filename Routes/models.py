@@ -37,8 +37,8 @@ class Contact(models.Model):
     subject = models.CharField(max_length=255, default="")
     message = models.TextField(default="")
 
-    def __str__(self):
-        return self.name
+    # def __str__(self):
+    #     return self.name
 
 
 class Service(models.Model):

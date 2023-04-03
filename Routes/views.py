@@ -3,6 +3,11 @@ from .models import Project, Image, Language, Contact, Service, Skill
 from .serializers import ProjectSerializer, ImageSerializer, LanguageSerializer, ContactSerializer
 from .serializers import ServiceSerializer, SkillSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated, IsAdminUser, AllowAny
+from django.core.mail import send_mail
+from django.conf import settings
+from rest_framework.response import Response
+from rest_framework import status
+from django.template.loader import render_to_string
 
 # language view sets...
 class LanguageViewSet(generics.ListCreateAPIView):
@@ -71,6 +76,26 @@ class ContactViewSet(generics.ListCreateAPIView):
         if self.request.method == 'GET':
             self.permission_classes = [IsAuthenticated, IsAdminUser]
         return super(ContactViewSet, self).get_permissions()
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        self.perform_create(serializer)
+
+        # Send email to a particular email address with data from the Contact model
+        contact = serializer.instance
+        message = render_to_string('contact_form.html', {'name': contact.name, 'email': contact.email, 'subject': contact.subject, 'message': contact.message})
+        send_mail(
+            'Subject: {}'.format(contact.subject),
+            'From: {}\nEmail: {}\nMessage: {}'.format(contact.name, contact.email, contact.message),
+            settings.DEFAULT_FROM_EMAIL,
+            ['bsohangpur@gmail.com'],
+            fail_silently=False,
+            html_message=message
+        )
+
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 # service view sets...
 class ServiceViewsSet(generics.ListCreateAPIView):

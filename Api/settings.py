@@ -46,7 +46,7 @@ ROOT_URLCONF = 'Api.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / 'template'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,3 +139,11 @@ REST_FRAMEWORK = {
 SIMPLE_JWT={
     'ACCESS_TOKEN_LIFETIME':timedelta(days=1)    
 }
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.outlook.com' # or your SMTP server address
+EMAIL_PORT = 587 # or your SMTP server port
+EMAIL_USE_TLS = True # or False, depending on your SMTP server configuration
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER') # or your SMTP server username
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD') # or your SMTP server password
+DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL')
